@@ -20,7 +20,7 @@ class ManduPipeline:
     def setupDBConnect(self):
         self.conn = pymysql.connect(host='127.0.0.1',user='root',password='123',db='mydb',charset='utf8')
         self.cur = self.conn.cursor()
-        print("DB Connected")
+        print("----------------DB Connected----------------")
 
 
 
@@ -67,7 +67,7 @@ class ManduPipeline:
             item.get('highet_price','').strip(),
             item.get('volume','').strip()
             ))
-        print('Data stored in DB')
+        print('-----------Data stored in DB-------------')
         self.conn.commit()
         
 

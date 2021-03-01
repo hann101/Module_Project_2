@@ -2,6 +2,7 @@
 #
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/items.html
+# 아이템 설정
 
 import scrapy
 
