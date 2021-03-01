@@ -5,6 +5,12 @@ from mandu.items import ManduItem
 class MybotsSpider(scrapy.Spider):
     name = 'mybots'
     custom_settings = {'JOBDIR': 'crawl_mybots1'}
+    # 지속성 지원을 사용하려면 JOBDIR 설정을 통해 작업 디렉터리를 정의하면 됩니다. 이 디렉토리는 단일 작업(즉, 스파이더 실행)의 상태를 유지하기 위해 필요한 모든 데이터를 저장하기 위한 것입니다. 이 디렉터리는 단일 작업의 상태를 저장하는 데 사용되므로 다른 스파이더 또는 동일한 스파이더의 다른 작업/런에 의해 공유되어서는 안 됩니다.
+    # https://docs.scrapy.org/en/latest/topics/jobs.html?highlight=jobdir#job-directory
+
+
+
+
     allowed_domains = ['finance.yahoo.com/quote/005930.KS']
 # https://finance.daum.net/quotes/A032640?period=day#home
 
@@ -53,48 +59,3 @@ class MybotsSpider(scrapy.Spider):
         print("-------------------------")
         return items
 
-#########################################
-# def remove(content):
-#     result=[]
-#     for num in range(len(content)):
-#         if len(content[num].strip())>0:
-#             result.append(content[num].strip())
-#     return result
-
-"""
-class MybotsSpider(scrapy.Spider):
-    name = 'mybots'
-    allowed_domains = refer('1')
-    #start_urls = ['https://movie.naver.com/movie/point/af/list.nhn?&page=1']
-    start_urls = refer('2')
-    # 동작은 함수 안에 적어야 해. 여기서 action을 선언하면 구조상 오류가 됨.
-
-    
-    def parse(self, response):
-
-        print('#'*13)
-        title = response.xpath('//*[@id="old_content"]/table/tbody/tr/td[2]/a[1]/text()').extract()
-        star = response.xpath('//*[@id="old_content"]/table/tbody/tr/td[2]/div/em/text()').extract()
-        date = response.xpath('//*[@id="old_content"]/table/tbody/tr/td[3]/text()').extract()
-        writer = response.css('.author::text').extract()
-        content = response.xpath('//*[@id="old_content"]/table/tbody/tr/td[2]/text()').extract()
-            
-        content = remove(content)
-
-        items = []
-        for idx in range(len(title)):
-            item = MyscraperItem()
-            item['title'] = title[idx]
-            item['star'] = star[idx]
-            item['date'] = date[idx]
-            item['writer'] = writer[idx]
-            item['content'] = content[idx]
-            items.append(item)
-
-                    
-
-        return items
-        # 제목, 평점, 날짜 작성자 내용
-"""
-
-## 강사님 코드 보기 (깃허브)
