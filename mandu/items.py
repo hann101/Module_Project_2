@@ -7,10 +7,11 @@ import scrapy
 
 
 class ManduItem(scrapy.Item):
-
-    time = scrapy.Field()
-    dealing = scrapy.Field()
-    price = scrapy.Field()
-    max_price = scrapy.Field()
-    min_price = scrapy.Field()
+    # title = scrapy.Field()
+    name =scrapy.Field()
     num = scrapy.Field()
+    price = scrapy.Field()
+    # day_range = scrapy.Field()
+    lowest_price = scrapy.Field()
+    highet_price = scrapy.Field()
+    volume = scrapy.Field()

@@ -15,46 +15,60 @@ class ManduPipeline:
         #인스턴스가 만들어 질때 
         self.createTable()
 
+
+
+    def setupDBConnect(self):
+        self.conn = pymysql.connect(host='127.0.0.1',user='root',password='123',db='mydb',charset='utf8')
+        self.cur = self.conn.cursor()
+        print("DB Connected")
+
+
+
+
+    def createTable(self):
+        # self.cur.execute("DROP TABLE IF EXISTS stock_info")
+        # 이걸 주석처리 안해서 db에 저장이 안되었음.
+        # 지우고 만들고 반복했기 때문임.
+
+        self.cur.execute('''
+        CREATE TABLE IF NOT EXISTS stock_info(
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name varchar(100),
+            num varchar(100),
+            price VARCHAR(100),
+            lowest_price VARCHAR(100),
+            highest_price VARCHAR(100),
+            volume VARCHAR(100),
+            created_at DATETIME DEFAULT NOW()
+            )''')
+
+        
+
+
+
     def process_item(self, item, spider):
         self.storeInDb(item)
         return item
 
 
+
     def storeInDb(self,item):
         #각아이템을 table에 저장
         sql = ''' 
-        INSERT INTO stock_info(cur_time, dealing, price, max_price, min_price,num) VALUES(%s,%s,%s,%s,%s,%s)
+        INSERT INTO stock_info(name, num, price, lowest_price, highest_price, volume) VALUES(%s,%s,%s,%s,%s,%s)
         '''
         self.cur.execute(sql,(\
-            item.get('time'),
-            item.get('dealing'),
-            item.get('price'),
-            item.get('max_price'),
-            item.get('min_price'),
-            item.get('num'),
+
+            item.get('name','').strip(),
+            item.get('num','').strip(),
+
+            item.get('price','').strip(),
+            item.get('lowest_price','').strip(),
+            item.get('highet_price','').strip(),
+            item.get('volume','').strip()
             ))
         print('Data stored in DB')
         self.conn.commit()
         
 
-        
-    def setupDBConnect(self):
-        self.conn = pymysql.connect(host='127.0.0.1',user='root',password='123',db='mydb',charset='utf8')
-        self.cur = self.conn.cursor()
 
-        print("DB Connected")
-
-    def createTable(self):
-        self.cur.execute("DROP TABLE IF EXISTS stock_info")
-
-        self.cur.execute('''
-        CREATE TABLE IF NOT EXISTS stock_info(
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            cur_time VARCHAR(40),
-            dealing VARCHAR(40),
-            price VARCHAR(40),
-            max_price VARCHAR(40),
-            min_price VARCHAR(40),
-            num varchar(40)
-
-            )''')
